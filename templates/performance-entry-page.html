@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Entry</title>
+    <link rel="stylesheet" href="/static/css/style.css"> <!-- Ensure consistent CSS -->
+</head>
+<body>
+    <header class="navbar">
+        <div class="navbar-brand">Learning Assistant</div>
+        <nav class="nav_bar">
+            <a href="/main-page">Home</a> <!-- Updated route to match other pages -->
+            <a href="/visual-representation-page">Visual Representation</a>
+            <a href="/recommendations">Recommendations</a>
+            <a href="/all-marks">Marks History</a>
+        </nav>
+        <button class="logout-btn" onclick="window.location.href='/logout'">Logout</button>
+    </header>
+    <div class="content">
+        <h1>Enter Marks</h1>
+        <form action="/submit-marks" method="POST">
+            <div class="form-group">
+                <label for="math">Math:</label>
+                <input type="number" id="math" name="math" placeholder="Enter marks for Math" min="0" max="100" required>
+            </div>
+            <div class="form-group">
+                <label for="science">Science:</label>
+                <input type="number" id="science" name="science" placeholder="Enter marks for Science" min="0" max="100" required>
+            </div>
+            <div class="form-group">
+                <label for="social">Social:</label>
+                <input type="number" id="social" name="social" placeholder="Enter marks for Social" min="0" max="100" required>
+            </div>
+            <div class="form-group">
+                <label for="computer">Computer:</label>
+                <input type="number" id="computer" name="computer" placeholder="Enter marks for Computer" min="0" max="100" required>
+            </div>
+            <div class="form-group">
+                <label for="gk">GK:</label>
+                <input type="number" id="gk" name="gk" placeholder="Enter marks for GK" min="0" max="100" required>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

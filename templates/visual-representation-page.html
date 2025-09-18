@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Representation</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="navbar">
+        <div class="navbar-brand">Learning Assistant</div>
+        <nav class="nav_bar">
+            <a href="/main-page">Home</a> <!-- Corrected route -->
+            <a href="/performance-entry-page">Performance Entry</a> <!-- Corrected route -->
+            <a href="/recommendations">Recommendations</a> <!-- Corrected route -->
+            <a href="/all-marks">Marks History</a>
+        </nav>
+        <button class="logout-btn" onclick="window.location.href='/logout'">Logout</button>
+    </header>
+    <div class="content">
+        <h1>Visual Representation of Marks</h1>
+        <canvas id="marksChart" width="800" height="400"></canvas> <!-- Increased width and height -->
+    </div>
+    <script>
+        // Ensure marks data is passed correctly from the backend
+        try {
+            const marksData = JSON.parse('{{ marks | tojson | safe }}');
+            if (!Array.isArray(marksData) || marksData.length === 0) {
+                console.error("No marks data available or invalid format.");
+            } else {
+                const chartData = marksData.map((entry, index) => ({
+                    label: `Attempt ${index + 1}`,
+                    data: [
+                        entry.marks.math || 0,
+                        entry.marks.science || 0,
+                        entry.marks.social || 0,
+                        entry.marks.computer || 0,
+                        entry.marks.gk || 0
+                    ],
+                    borderColor: `hsl(${index * 60}, 70%, 50%)`,
+                    fill: false
+                }));
+
+                // Render the chart using Chart.js
+                const ctx = document.getElementById('marksChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Math', 'Science', 'Social', 'Computer', 'GK'],
+                        datasets: chartData
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Marks Comparison Over Attempts'
+                            }
+                        }
+                    }
+                });
+            }
+        } catch (error) {
+            console.error("Error parsing marks data:", error);
+        }
+    </script>
+</body>
+</html>

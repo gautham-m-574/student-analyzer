@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendations</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="navbar-brand">Learning Assistant</div>
+        <nav class="nav_bar">
+            <a href="/main-page">Home</a>
+            <a href="/performance-entry-page">Performance Entry</a>
+            <a href="/visual-representation-page">Visual Representation</a>
+            <a href="/all-marks">Marks History</a>
+        </nav>
+        <button class="logout-btn" onclick="window.location.href='/logout'">Logout</button>
+    </header>
+    <div class="content">
+        <h1>Recommendations</h1>
+        <div class="recommendations-container">
+            {% if recommendations %}
+                {% for recommendation in recommendations %}
+                    <div class="recommendation">
+                        <h2>{{ recommendation.subject }}</h2>
+                        <p>{{ recommendation.message }}</p>
+                        <ul>
+                            {% for resource in recommendation.resources %}
+                                <li><a href="{{ resource }}" target="_blank">{{ resource }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        {% if recommendation.allow_topic_input %}
+                        <div class="topic-input">
+                            <label for="topic-{{ loop.index }}">Enter a difficult topic in {{ recommendation.subject }}:</label>
+                            <input type="text" id="topic-{{ loop.index }}" placeholder="Type your topic here">
+                            <button onclick="generateLink('{{ recommendation.subject }}', 'topic-{{ loop.index }}')">Get Resources</button>
+                        </div>
+                        <div id="resources-container-topic-{{ loop.index }}"></div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No recommendations available at this time.</p>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        function generateLink(subject, inputId) {
+            const topic = document.getElementById(inputId).value.trim();
+            if (topic) {
+                // Construct a Google search URL with the entered topic
+                const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(topic)}`;
+                // Open the Google search in a new tab
+                window.open(googleSearchUrl, '_blank');
+            } else {
+                alert('Please enter a valid topic.');
+            }
+        }
+    </script>
+</body>
+</html>
